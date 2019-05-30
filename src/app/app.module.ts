@@ -5,10 +5,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { map } from 'rxjs/operators';
 import { NgSemanticModule } from 'ng-semantic';
+import { BorradoresComponent } from './borradores/borradores.component';
+import { EncuestasComponent } from './encuestas/encuestas.component';
+import { CrearEncuestaComponent } from './crear-encuesta/crear-encuesta.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BorradoresComponent,
+    EncuestasComponent,
+    CrearEncuestaComponent,
   ],
   imports: [
     BrowserModule,

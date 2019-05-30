@@ -1,0 +1,38 @@
+<div class="ui inverted segment">
+  <div class="ui inverted secondary pointing menu">
+    <a class="item" href="/">
+      Cuestionarios publicados
+    </a>
+    <a class="active item" href="/borradores">
+      Borradores
+    </a>
+    <a class="item" href="nueva-encuesta">
+      <div class="ui vertical animated button" tabindex="0">
+        <div class="hidden content">Nueva</div>
+        <div class="visible content">
+          <i class="add icon"></i>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+<br>
+<h1 style="padding-left: 1em">Borradores</h1>
+<div class="ui grid" style="margin: 0 auto; text-align:center;">
+  <div class="ui ten wide column" style="margin: 0 auto;">
+    <div class="ui piled segment" style="margin: 0 auto;">
+      <h4 class="ui header">No tienes encuestas realizadas</h4>
+      <p>Puedes agregar una en el botón con el símbolo de "+" en el menú ;)</p>
+    </div>
+  </div>
+</div>
+<div class="four wide column" *ngFor="let e of encuestas">
+  <div class="ui clearing center aligned segment">
+    {{ e.nombre }}
+    <div class="ui right floated button primary">Ver</div>
+    <!--
+    <div class="ui right floated button positive" *ngIf="e.status == 'Borrador'">Editar</div>
+    <div class="ui right floated button negative" *ngIf="e.status == 'Borrador'">Eliminar</div>
+    -->
+  </div>
+</div>
