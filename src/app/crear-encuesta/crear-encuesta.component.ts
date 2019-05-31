@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms'
 import { Apollo } from 'apollo-angular'
+import { Router } from '@angular/router'
 //import * as Query from './query'
 type encuesta = {
   titulo: String,
@@ -32,14 +33,21 @@ export class CrearEncuestaComponent implements OnInit {
   isAdding:boolean = false
   tipo_pregunta: any = null
   questionForm: FormGroup
+  saveAsBorradorForm: FormGroup
   constructor(
-    private apollo:Apollo
+    private apollo:Apollo,
+    private router:Router
   )
   {
     this.questionForm = new FormGroup({
       'titulo': new FormControl('', Validators.required),
       'descripcion': new FormControl('', Validators.required),
       'respuestas': new FormControl('', Validators.required)
+    })
+
+    this.saveAsBorradorForm = new FormGroup({
+      'titulo': new FormControl('', Validators.required),
+      'descripcion': new FormControl('', Validators.required)
     })
   }
 
@@ -89,7 +97,7 @@ export class CrearEncuestaComponent implements OnInit {
    *
    * @return  {encuesta}             Estructura que requiere una encuesta
    */
-  buildEncuesta(preguntas): encuesta
+  buildEncuesta(title, description, preguntas): encuesta
   {
     return {
       titulo: "Mi cuestionario",
@@ -183,7 +191,7 @@ export class CrearEncuestaComponent implements OnInit {
    */
   canSave()
   {
-    if(this.array_preguntas.length >= 10)
+    if(this.array_preguntas.length >= 1)
     {
       return false
     }
@@ -198,8 +206,10 @@ export class CrearEncuestaComponent implements OnInit {
    */
   saveAsBorrador()
   {
-    let encuesta = this.buildEncuesta(this.array_preguntas)
+    let encuesta = this.buildEncuesta('', '',this.array_preguntas)
+    localStorage.setItem('encuesta', JSON.stringify(encuesta))
     console.log(JSON.stringify(encuesta))
+    return this.router.navigateByUrl('borradores')
   }
 
   /**
