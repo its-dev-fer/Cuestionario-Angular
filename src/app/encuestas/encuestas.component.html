@@ -34,8 +34,9 @@
 <div class="ui grid" style="margin: 0 auto">
   <div class="four wide column" *ngFor="let e of encuestas">
     <div class="ui clearing center aligned segment">
-      {{ e.nombre }}
-      <div class="ui right floated button primary">Ver</div>
+      {{ e.name }}
+      <div class="ui right floated button primary" [routerLink]="[ '/ver-encuesta', e.id ]" *ngIf="e.status == true">Ver</div>
+      <div class="ui right floated button secondary" [routerLink]="[ '/editar-borador', e.id]" *ngIf="e.status == false">Editar</div>
       <!--
       <div class="ui right floated button positive" *ngIf="e.status == 'Borrador'">Editar</div>
       <div class="ui right floated button negative" *ngIf="e.status == 'Borrador'">Eliminar</div>

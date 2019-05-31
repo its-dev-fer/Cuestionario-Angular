@@ -12,6 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
 import { EditarBorradorComponent } from './editar-borrador/editar-borrador.component';
+import { VerEncuestaComponent } from './ver-encuesta/ver-encuesta.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { EditarBorradorComponent } from './editar-borrador/editar-borrador.compo
     EncuestasComponent,
     CrearEncuestaComponent,
     EditarBorradorComponent,
+    VerEncuestaComponent,
   ],
   imports: [
     BrowserModule,

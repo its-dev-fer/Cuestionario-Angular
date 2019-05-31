@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms'
-import { Apollo } from 'apollo-angular'
 import { Router } from '@angular/router'
-//import * as Query from './query'
+import { Apollo } from 'apollo-angular'
+import * as Query from '../query'
 type encuesta = {
   titulo: String,
   descripcion: String,
@@ -35,8 +35,8 @@ export class CrearEncuestaComponent implements OnInit {
   questionForm: FormGroup
   saveAsBorradorForm: FormGroup
   constructor(
+    private router:Router,
     private apollo:Apollo,
-    private router:Router
   )
   {
     this.questionForm = new FormGroup({
@@ -100,8 +100,8 @@ export class CrearEncuestaComponent implements OnInit {
   buildEncuesta(title, description, preguntas): encuesta
   {
     return {
-      titulo: "Mi cuestionario",
-      descripcion: "Ejemplo",
+      titulo: title,
+      descripcion: description,
       estado: "Borrador",
       preguntas: preguntas
     }
@@ -204,12 +204,36 @@ export class CrearEncuestaComponent implements OnInit {
   /**
    * Guardar como borrador
    */
-  saveAsBorrador()
+  async saveAsBorrador()
   {
-    let encuesta = this.buildEncuesta('', '',this.array_preguntas)
-    localStorage.setItem('encuesta', JSON.stringify(encuesta))
+    let nombre = this.saveAsBorradorForm.get('titulo').value
+    let descripcion = this.saveAsBorradorForm.get('descripcion').value
+    let encuesta = this.buildEncuesta(nombre, descripcion,this.array_preguntas)
+    //localStorage.setItem('encuesta', JSON.stringify(encuesta))
     console.log(JSON.stringify(encuesta))
-    return this.router.navigateByUrl('borradores')
+    //return this.router.navigateByUrl('borradores')
+    await this.apollo.mutate({
+      mutation: Query.createEncuesta,
+      variables:{
+        name: nombre,
+        description: descripcion,
+        content: JSON.stringify(encuesta),
+        status: false
+      },
+      update: (proxy, {data: {createEncuesta}}) => {
+        let data:any = proxy.readQuery({query: Query.getAllEncuestas})
+        console.log(data)
+        console.log(createEncuesta)
+        proxy.writeQuery({ query: Query.getAllEncuestas, data})
+      }
+    })
+    .subscribe(data => {
+      console.log(data)
+      this.router.navigateByUrl('')
+    }, error => {
+      console.log(error)
+      alert('No se pudo guardar la encuesta')
+    })
   }
 
   /**
