@@ -12,21 +12,129 @@
 <div class="ui grid" style="margin: 0 auto; text-align:center;">
   <div class="ui ten wide column" style="margin: 0 auto; padding: 0">
     <div class="ui icon buttons">
-      <button class="ui button" data-tooltip="Agrega una pregunta de tipo texto"><i class="align font icon"></i></button>
-      <button class="ui button" data-tooltip="Agrega una pregunta de selección múltiple"><i class="align list ul icon"></i></button>
-      <button class="ui button" data-tooltip="Agrega una pregunta de selección"><i class="align sort icon"></i></button>
-      <button class="ui button" data-tooltip="Agrega una pregunta de tipo radio"><i class="align circle outline icon"></i></button>
-    </div>  
+      <button class="ui button" (click)="showAddQuestion('texto')" [disabled]="is_adding()" data-tooltip="Agrega una pregunta de tipo texto"><i class="align font icon"></i></button>
+      <button class="ui button" (click)="showAddQuestion('multiple')" [disabled]="is_adding()" data-tooltip="Agrega una pregunta de selección múltiple"><i class="align list ul icon"></i></button>
+      <button class="ui button" (click)="showAddQuestion('seleccion')" [disabled]="is_adding()" data-tooltip="Agrega una pregunta de selección"><i class="align sort icon"></i></button>
+      <button class="ui button" (click)="showAddQuestion('radio')" [disabled]="is_adding()" data-tooltip="Agrega una pregunta de tipo radio"><i class="align circle outline icon"></i></button>
+      <button class="ui button" (click)="saveAsBorrador()" [disabled]="canSave()" data-tooltip="Guardar como borrador"><i class="align eraser icon"></i></button>
+      <button class="ui button" (click)="publish()" [disabled]="canSave()" data-tooltip="Publicar encuesta"><i class="align cloud icon"></i></button>
+    </div>
   </div>
 </div>
+<br>
+<!-- Div para crear preguntas -->
+<div class="ui grid" style="margin: 0 auto" *ngIf="isAdding">
+  <div class="ui ten wide column" style="margin: 0 auto;">
 
+    <div class="ui grid" [ngSwitch]="tipo_pregunta">
+      <div class="ui sixteen wide column" style="margin: 0 auto">
+        <form [formGroup]="questionForm">
+          <div class="ui segment chadow sixteen wide column">
+            <h4>Agrega una nueva pregunta</h4>
+            <div class="ui labeled input" style="width: 100%">
+              <div class="ui label">
+                Pregunta:
+              </div>
+              <input type="text" placeholder="¿?" formControlName="titulo">
+            </div>
+            <br><br>
+            <div class="ui labeled input" style="width: 100%">
+              <div class="ui label">
+                Descripción:
+              </div>
+              <input type="text" placeholder="Explica a detalle tu preunta" formControlName="descripcion">
+            </div>
+            <br><br>
+            <div class="ui labeled input" style="width: 100%" *ngSwitchCase="'texto'">
+              <div class="ui label">
+                Respuesta:
+              </div>
+              <input type="text" placeholder="Placeholder para mostrar en la respuesta" formControlName="respuestas">
+            </div>
+            <div class="ui labeled input" style="width: 100%" data-tooltip="Ingresa las opciones separándolas con una coma." *ngSwitchDefault>
+              <div class="ui label">
+                Opciones:
+              </div>
+              <input type="text" placeholder="Opcion 1, Opcion 2," formControlName="respuestas">
+            </div>
+            <br><br>
+            <button class="ui basic button" style="color: #457f39 !important; border-color:#457f39 !important;" (click)="addQuestion()" [disabled]="!questionForm.valid">
+              <i class="icon save"></i>
+              Agregar pregunta
+            </button>
+            <button class="ui basic button" style="color: #cc5151 !important; border-color:#cc5151 !important;" (click)="abortQuestion()">
+                <i class="icon ban"></i>
+                Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 <br>
 
-<div class="ui grid" style="margin: 0 auto; text-align:center;" *ngIf="!hasAQuestion">
+<div class="ui grid" style="margin: 0 auto; text-align:center;" *ngIf="!hasAQuestion()">
   <div class="ui ten wide column" style="margin: 0 auto;">
     <div class="ui piled segment" style="margin: 0 auto;">
       <h4 class="ui header">No tienes preguntas</h4>
       <p>Aquí aparecerán tus preguntas</p>
+    </div>
+  </div>
+</div>
+
+<div class="ui grid" style="margin: 0 auto; text-align:center;" *ngIf="hasAQuestion()">
+  <div class="ui ten wide column" style="margin: 0 auto;">
+    <div class="ui segment chadow" *ngFor="let question of array_preguntas">
+      <h3 style="font-weight: bold !important">{{ question.titulo }}</h3>
+      <h4>{{ question.descripcion }}</h4>
+      <br>
+      <div [ngSwitch]="question.tipo">
+        <div class="ui labeled input" style="width: 100%" *ngSwitchCase="'texto'">
+          <div class="ui label">
+            Respuesta:
+          </div>
+          <input type="text" placeholder="{{ question.respuestas }}">
+        </div>
+
+        <div *ngSwitchCase="'multiple'" style="width: 100%">
+          <div *ngFor="let respuesta of  question.respuestas">
+            <div class="ui checkbox">
+              <input type="checkbox">
+              <label>{{ respuesta }}</label>
+              <br>
+            </div>
+            <br>
+          </div>
+        </div>
+
+
+        <div *ngSwitchCase="'seleccion'" style="width: 50%; margin: 0 auto !important">
+          <div class="ui form">
+            <div class="field">
+              <label>Seleccione una respuesta</label>
+              <select class="ui search dropdown">
+                <option disabled selected>Seleccione una opción</option>
+                <option *ngFor="let respuesta of question.respuestas" value="{{ respuesta }}">
+                  {{ respuesta }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div *ngSwitchCase="'radio'" style="width: 50%; margin: 0 auto !important">
+          <div *ngFor="let respuesta of question.respuestas">
+            <div class="ui radio checkbox" style="margin: 2em !important">
+              <input type="radio" name="radio">
+              <label>{{ respuesta }}</label>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      
     </div>
   </div>
 </div>

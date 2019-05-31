@@ -8,6 +8,7 @@ import { NgSemanticModule } from 'ng-semantic';
 import { BorradoresComponent } from './borradores/borradores.component';
 import { EncuestasComponent } from './encuestas/encuestas.component';
 import { CrearEncuestaComponent } from './crear-encuesta/crear-encuesta.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { CrearEncuestaComponent } from './crear-encuesta/crear-encuesta.componen
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgSemanticModule
+    NgSemanticModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
