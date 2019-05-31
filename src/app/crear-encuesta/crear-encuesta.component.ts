@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms'
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
-
+import { Apollo } from 'apollo-angular'
+//import * as Query from './query'
 type encuesta = {
   titulo: String,
   descripcion: String,
@@ -32,7 +32,9 @@ export class CrearEncuestaComponent implements OnInit {
   isAdding:boolean = false
   tipo_pregunta: any = null
   questionForm: FormGroup
-  constructor()
+  constructor(
+    private apollo:Apollo
+  )
   {
     this.questionForm = new FormGroup({
       'titulo': new FormControl('', Validators.required),
