@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { map } from 'rxjs/operators';
 import { NgSemanticModule } from 'ng-semantic';
 import { BorradoresComponent } from './borradores/borradores.component';
 import { EncuestasComponent } from './encuestas/encuestas.component';
@@ -13,6 +12,7 @@ import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
 import { EditarBorradorComponent } from './editar-borrador/editar-borrador.component';
 import { VerEncuestaComponent } from './ver-encuesta/ver-encuesta.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -29,7 +29,8 @@ import { VerEncuestaComponent } from './ver-encuesta/ver-encuesta.component';
     NgSemanticModule,
     ReactiveFormsModule,
     GraphQLModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule.forRoot([])
   ],
   providers: [],
   bootstrap: [AppComponent]

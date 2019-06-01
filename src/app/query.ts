@@ -19,7 +19,8 @@ export const getAllEncuestas = gql`
     } 
   }
 `
-export const getEncuesta= gql`
+
+export const getEncuestaByID= gql`
   query getEncuesta($id: Int!)
   {
     getEncuesta(id:$id)
@@ -34,22 +35,7 @@ export const getEncuesta= gql`
     }
   }
 `
-/*
-export const getEncuesta= gql`
-  mutation getEncuesta($id: Int!)
-  {
-    getEncuesta(id:$id)
-    {
-      id,
-      name,
-      description,
-      creation_date,
-      content,
-      status,
-      deleted
-    }
-  }
-`*/
+
 export const createEncuesta = gql`
   mutation createEncuesta($name: String!, $description: String!, $content: String!, $status:Boolean!)
   {
