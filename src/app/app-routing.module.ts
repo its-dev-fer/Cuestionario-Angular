@@ -10,7 +10,7 @@ const routes: Routes = [
   { path:'', component: EncuestasComponent },
   { path:'borradores', component: BorradoresComponent },
   { path:'nueva-encuesta', component: CrearEncuestaComponent },
-  { path:'editar-borador/:item', component: EditarBorradorComponent },
+  { path:'editar-borador', component: EditarBorradorComponent },
   { path: 'ver-encuesta/:id', component: VerEncuestaComponent},
 ];
 

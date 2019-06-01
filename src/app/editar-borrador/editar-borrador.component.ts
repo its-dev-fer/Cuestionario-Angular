@@ -4,21 +4,15 @@ import { Apollo } from 'apollo-angular'
 import * as Query from '../query'
 import { FormGroup, FormControl, Validators } from '@angular/forms'
 
-type encuesta = {
-  titulo: String,
-  descripcion: String,
-  preguntas: Object,
-  estado: Boolean
-}
-
 @Component({
   selector: 'app-editar-borrador',
   templateUrl: './editar-borrador.component.html',
   styleUrls: ['./editar-borrador.component.scss']
 })
 export class EditarBorradorComponent implements OnInit {
-  id = null
-  encuesta:encuesta
+  titulo_encuesta: any
+  preguntas:any
+  descripcion_encuesta:any
   isAdding:boolean = false
   tipo_pregunta: any = null
   questionForm: FormGroup
@@ -29,44 +23,23 @@ export class EditarBorradorComponent implements OnInit {
     private apollo:Apollo
   )
   {
+    this.param.queryParams.subscribe(params => {
+      const json_encuesta = JSON.parse(params['encuesta'])
+      const _preguntas = JSON.parse(json_encuesta.content)
+      const _preguntas_ = JSON.stringify(_preguntas.preguntas)
+      this.titulo_encuesta = json_encuesta.name
+      this.descripcion_encuesta = json_encuesta.description
+      this.preguntas = JSON.parse(_preguntas_)
+      //console.log(JSON.parse(JSON.stringify(json_encuesta.content.preguntas)))
+      //this.encuesta = JSON.parse(params['encuesta'])
+    })
   }
   
   async ngOnInit() {
-    await this.getByID().then(res => {
-      console.log(res)
-    })
-    this.questionForm = new FormGroup({
-      'titulo': new FormControl('', Validators.required),
-      'descripcion': new FormControl('', Validators.required),
-      'respuestas': new FormControl('', Validators.required)
-    })
-  }
+    // this.param.paramMap.subscribe(params => {
+    //   this.id = parseInt(params.get('item'))
+    // }).unsubscribe()
 
-  async getByID()
-  {
-    this.param.paramMap.subscribe(params => {
-      this.id = parseInt(params.get('item'))
-    }).unsubscribe()
-    console.log(typeof(this.id))
-    return await this.apollo.watchQuery({
-      query: Query.getAllEncuestas
-    })
-    .valueChanges.subscribe(response => {
-      let encuestas =  response.data['getAllEncuestas']
-      encuestas.forEach(element => {
-        if(element.id == this.id)
-        {
-          const el:encuesta = {
-            titulo: element.name,
-            descripcion: element.description,
-            preguntas: element.content,
-            estado: element.status
-          }
-          this.encuesta = el
-          return el
-        }
-      });
-    }).unsubscribe()
   }
 
   showAddQuestion(tipo)

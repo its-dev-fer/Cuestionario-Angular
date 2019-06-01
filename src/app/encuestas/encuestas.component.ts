@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'
+import { Router, NavigationExtras } from '@angular/router'
 import { Apollo } from 'apollo-angular'
 import * as Query from '../query'
 @Component({
@@ -29,5 +29,20 @@ export class EncuestasComponent implements OnInit {
       console.log(response)
       this.encuestas = response.data['getAllEncuestas']
     })
+  }
+
+
+  showBorrador(encuesta)
+  {
+    console.log('Llega')
+    console.log(JSON.stringify(encuesta))
+    console.log('-------')
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        "encuesta": JSON.stringify(encuesta)
+      }
+    }
+
+    this.router.navigate(["editar-borador"], navigationExtras)
   }
 }

@@ -74,9 +74,10 @@
     </div>
 </div>
 <br>
+
 <div class="ui grid" style="margin: 0 auto; text-align:center;">
     <div class="ui ten wide column" style="margin: 0 auto;">
-        <div class="ui segment chadow" *ngFor="let question of encuesta.preguntas">
+        <div class="ui segment chadow" *ngFor="let question of preguntas">
             <h3 style="font-weight: bold !important">{{ question.titulo }}</h3>
             <h4>{{ question.descripcion }}</h4>
             <br>

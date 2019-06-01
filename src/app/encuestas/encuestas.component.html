@@ -36,7 +36,7 @@
     <div class="ui clearing center aligned segment">
       {{ e.name }}
       <div class="ui right floated button primary" [routerLink]="[ '/ver-encuesta', e.id ]" *ngIf="e.status == true">Ver</div>
-      <div class="ui right floated button secondary" [routerLink]="[ '/editar-borador', e.id]" *ngIf="e.status == false">Editar</div>
+      <div class="ui right floated button secondary" (click)="showBorrador(e)" *ngIf="e.status == false">Editar</div>
       <!--
       <div class="ui right floated button positive" *ngIf="e.status == 'Borrador'">Editar</div>
       <div class="ui right floated button negative" *ngIf="e.status == 'Borrador'">Eliminar</div>
