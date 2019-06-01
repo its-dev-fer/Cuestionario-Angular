@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { Apollo } from 'apollo-angular'
 import * as Query from '../query'
+
 type encuesta = {
   titulo: String,
   descripcion: String,

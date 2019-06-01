@@ -55,7 +55,7 @@ export const createEncuesta = gql`
 export const updateEncuesta = gql`
   mutation updateEncuesta($id: Int!, $name: String!, $description: String!, $content: String!, $status: Boolean!, $deleted: Boolean!)
   {
-    updateEncuesta(name: $name, description: $description, content: $content, status: $status, deleted: $deleted)
+    updateEncuesta(id: $id, name: $name, description: $description, content: $content, status: $status, deleted: $deleted)
     {
       id,
       name,
