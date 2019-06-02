@@ -53,13 +53,6 @@ export class CrearEncuestaComponent implements OnInit {
   }
 
   ngOnInit() {
-    /*
-    let pregunta = this.buildQuestion()
-    this.array_preguntas.push(pregunta)
-    this.array_preguntas.push(pregunta)
-    console.log(JSON.stringify(pregunta))
-    let _encuesta = this.buildEncuesta(this.array_preguntas)
-    console.log(JSON.stringify(_encuesta))*/
   }
 
   /**
@@ -120,7 +113,6 @@ export class CrearEncuestaComponent implements OnInit {
         let pregunta = this.buildQuestion('texto', title, descripcion, respuestas)
         this.array_preguntas.push(pregunta)
         this.questionForm.reset()
-        console.log(this.array_preguntas)
         break
       }
 
@@ -131,7 +123,6 @@ export class CrearEncuestaComponent implements OnInit {
         let arrOpciones = txtOpciones.split(',')
         let opciones = []
         arrOpciones.forEach(option => {
-          //console.log(option.trim())
           if(option.trim().length > 0)
           {
             opciones.push(option.trim())
@@ -139,7 +130,6 @@ export class CrearEncuestaComponent implements OnInit {
         })
         arrOpciones = this.buildOptions(opciones)
         let pregunta = this.buildQuestion(this.tipo_pregunta, title, descripcion, opciones)
-        console.log(pregunta)
         this.array_preguntas.push(pregunta)
         this.questionForm.reset()
         break
@@ -210,9 +200,6 @@ export class CrearEncuestaComponent implements OnInit {
     let nombre = this.saveAsBorradorForm.get('titulo').value
     let descripcion = this.saveAsBorradorForm.get('descripcion').value
     let encuesta = this.buildEncuesta(nombre, descripcion,this.array_preguntas)
-    //localStorage.setItem('encuesta', JSON.stringify(encuesta))
-    console.log(JSON.stringify(encuesta))
-    //return this.router.navigateByUrl('borradores')
     await this.apollo.mutate({
       mutation: Query.createEncuesta,
       variables:{
@@ -223,13 +210,10 @@ export class CrearEncuestaComponent implements OnInit {
       },
       update: (proxy, {data: {createEncuesta}}) => {
         let data:any = proxy.readQuery({query: Query.getAllEncuestas})
-        console.log(data)
-        console.log(createEncuesta)
         proxy.writeQuery({ query: Query.getAllEncuestas, data})
       }
     })
     .subscribe(data => {
-      console.log(data)
       this.router.navigateByUrl('')
     }, error => {
       console.log(error)
@@ -240,9 +224,25 @@ export class CrearEncuestaComponent implements OnInit {
   /**
    * Publicar la encuesta, ya no se podrá editar
    */
-  publish()
+  async publish(encuesta)
   {
-
+    await this.apollo.mutate({
+      mutation: Query.updateEncuesta,
+      variables:{
+        id: parseInt(encuesta.id),
+        name: encuesta.name,
+        description: encuesta.description,
+        content: JSON.stringify(encuesta.content),
+        status: true,
+        deleted: false
+      }
+    })
+    .subscribe(data => {
+      this.router.navigateByUrl('')
+    }, error => {
+      console.log(error)
+      alert('No se pudo publicar la encuesta')
+    })
   }
 
 

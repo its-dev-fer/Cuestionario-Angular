@@ -59,14 +59,11 @@ export class EditarBorradorComponent implements OnInit {
     this.param.queryParams.subscribe(params => {
       const json_encuesta = JSON.parse(params['encuesta'])
       this.id = json_encuesta.id
-      console.log(json_encuesta.id)
       const _preguntas = JSON.parse(json_encuesta.content)
       const _preguntas_ = JSON.stringify(_preguntas.preguntas)
       this.titulo_encuesta = json_encuesta.name
       this.descripcion_encuesta = json_encuesta.description
       this.preguntas = JSON.parse(_preguntas_)
-      console.log(json_encuesta.name)
-      console.log(json_encuesta.description)
       this.saveAsBorradorForm.get('titulo').setValue(json_encuesta.name)
       this.saveAsBorradorForm.get('descripcion').setValue(json_encuesta.description)
     })
@@ -171,7 +168,6 @@ export class EditarBorradorComponent implements OnInit {
         let arrOpciones = txtOpciones.split(',')
         let opciones = []
         arrOpciones.forEach(option => {
-          //console.log(option.trim())
           if(option.trim().length > 0)
           {
             opciones.push(option.trim())
@@ -179,7 +175,6 @@ export class EditarBorradorComponent implements OnInit {
         })
         arrOpciones = this.buildOptions(opciones)
         let pregunta = this.buildQuestion(this.tipo_pregunta, title, descripcion, opciones)
-        console.log(pregunta)
         this.preguntas.push(pregunta)
         this.questionForm.reset()
         break
@@ -217,10 +212,6 @@ export class EditarBorradorComponent implements OnInit {
     let nombre = this.saveAsBorradorForm.get('titulo').value
     let descripcion = this.saveAsBorradorForm.get('descripcion').value
     let encuesta = this.buildEncuesta(nombre, descripcion,this.preguntas)
-    console.log(parseInt(this.id))
-    //localStorage.setItem('encuesta', JSON.stringify(encuesta))
-    console.log(JSON.stringify(encuesta))
-    //return this.router.navigateByUrl('borradores')
     await this.apollo.mutate({
       mutation: Query.updateEncuesta,
       variables:{
@@ -233,10 +224,8 @@ export class EditarBorradorComponent implements OnInit {
       }
     })
     .subscribe(data => {
-      console.log(data)
       this.router.navigateByUrl('')
     }, error => {
-      console.log(error)
       alert('No se pudo guardar la encuesta')
     })
   }

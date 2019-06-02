@@ -11,7 +11,7 @@ const routes: Routes = [
   { path:'borradores', component: BorradoresComponent },
   { path:'nueva-encuesta', component: CrearEncuestaComponent },
   { path:'editar-borador', component: EditarBorradorComponent },
-  { path: 'ver-encuesta/:id', component: VerEncuestaComponent},
+  { path: 'ver-encuesta', component: VerEncuestaComponent},
 ];
 
 @NgModule({

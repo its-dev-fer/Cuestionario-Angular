@@ -18,7 +18,7 @@
 </div>
 <br>
 <h1 style="padding-left: 1em">Borradores</h1>
-<div class="ui grid" style="margin: 0 auto; text-align:center;">
+<div class="ui grid" style="margin: 0 auto; text-align:center;" *ngIf="!hasAQuestion">
   <div class="ui ten wide column" style="margin: 0 auto;">
     <div class="ui piled segment" style="margin: 0 auto;">
       <h4 class="ui header">No tienes encuestas realizadas</h4>
@@ -26,13 +26,21 @@
     </div>
   </div>
 </div>
-<div class="four wide column" *ngFor="let e of encuestas">
-  <div class="ui clearing center aligned segment">
-    {{ e.nombre }}
-    <div class="ui right floated button primary">Ver</div>
-    <!--
-    <div class="ui right floated button positive" *ngIf="e.status == 'Borrador'">Editar</div>
-    <div class="ui right floated button negative" *ngIf="e.status == 'Borrador'">Eliminar</div>
-    -->
+
+<div class="ui grid" style="margin: 0 auto">
+  <div *ngFor="let e of encuestas">
+    <div class="four wide column" *ngIf="e.deleted == 0 && e.status == 0">
+      <div class="ui clearing center aligned segment">
+        {{ e.name }}
+        <br><br>
+        <div class="ui inverted olive button" (click)="showBorrador(e)" *ngIf="e.status == false">Editar</div>
+        <button class="ui inverted red button" (click)="deletePregunta(e)" *ngIf="e.status == false">Borrar</button>
+        <button class="ui inverted green button" (click)="publish(e)" *ngIf="e.status == false">Publicar</button>
+        <!--
+        <div class="ui right floated button positive" *ngIf="e.status == 'Borrador'">Editar</div>
+        <div class="ui right floated button negative" *ngIf="e.status == 'Borrador'">Eliminar</div>
+        -->
+      </div>
+    </div>
   </div>
 </div>

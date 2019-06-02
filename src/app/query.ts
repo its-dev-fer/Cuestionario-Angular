@@ -67,8 +67,23 @@ export const updateEncuesta = gql`
     }
   }
 `
+export const deleteEncuesta = gql`
+  query deleteEncuesta($id: Int!)
+  {
+    deleteEncuesta(id:$id)
+    {
+      id,
+      name,
+      description,
+      creation_date,
+      content,
+      status,
+      deleted
+    }
+  }
+`
 
-
+/*
 export const deleteEncuesta = gql`
   mutation deleteEncuesta($id: Int!)
   {
@@ -84,6 +99,7 @@ export const deleteEncuesta = gql`
     }
   }
 `
+*/
 
 
 /*

@@ -20,10 +20,10 @@
 <h1 style="padding-left: 1em">Encuestas</h1>
 <br>
 
-<div class="ui grid" style="margin: 0 auto; text-align:center;">
+<div class="ui grid" style="margin: 0 auto; text-align:center;" *ngIf="!hasAQuestion">
   <div class="ui ten wide column" style="margin: 0 auto;">
     <div class="ui piled segment" style="margin: 0 auto;">
-      <h4 class="ui header">No tienes encuestas realizadas</h4>
+      <h4 class="ui header">No tienes encuestas pubicadas</h4>
       <p>Puedes agregar una en el botón con el símbolo de "+" en el menú ;)</p>
     </div>
   </div>
@@ -32,18 +32,20 @@
 
 
 <div class="ui grid" style="margin: 0 auto">
-  <div class="four wide column" *ngFor="let e of encuestas">
-    <div class="ui clearing center aligned segment">
-      {{ e.name }}
-      <br><br>
-      <div class="ui floated button primary" [routerLink]="[ '/ver-encuesta', e.id ]" *ngIf="e.status == true">Ver</div>
-      <div class="ui inverted olive button" (click)="showBorrador(e)" *ngIf="e.status == false">Editar</div>
-      <button class="ui inverted red button" (click)="deletePregunta(e.id)" *ngIf="e.status == false">Borrar</button>
-      <button class="ui inverted green button" (click)="publish(e.id)" *ngIf="e.status == false">Publicar</button>
-      <!--
-      <div class="ui right floated button positive" *ngIf="e.status == 'Borrador'">Editar</div>
-      <div class="ui right floated button negative" *ngIf="e.status == 'Borrador'">Eliminar</div>
-      -->
+  <div *ngFor="let e of encuestas">
+    <div class="four wide column" *ngIf="e.deleted == 0 && e.status == 1">
+      <div class="ui clearing center aligned segment">
+        {{ e.name }}
+        <br><br>
+        <div class="ui floated button primary"  (click)="view(e)" *ngIf="e.status == true">Ver</div>
+        <div class="ui inverted olive button" (click)="showBorrador(e)" *ngIf="e.status == false">Editar</div>
+        <button class="ui inverted red button" (click)="deletePregunta(e)" *ngIf="e.status == false">Borrar</button>
+        <button class="ui inverted green button" (click)="publish(e)" *ngIf="e.status == false">Publicar</button>
+        <!--
+        <div class="ui right floated button positive" *ngIf="e.status == 'Borrador'">Editar</div>
+        <div class="ui right floated button negative" *ngIf="e.status == 'Borrador'">Eliminar</div>
+        -->
+      </div>
     </div>
   </div>
 </div>

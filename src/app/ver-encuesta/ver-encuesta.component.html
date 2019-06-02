@@ -1,3 +1,78 @@
-<p>
-  ver-encuesta works!
-</p>
+<div class="ui inverted segment">
+  <div class="ui inverted secondary pointing menu">
+    <a class="item" href="/">
+      Encuestas publicadas
+    </a>
+    <a class="item" href="/borradores">
+      Borradores
+    </a>
+    
+    <h3 style="margin-left: 3em; margin-bottom: 0.5em">{{ titulo_encuesta }}</h3>
+  </div>
+</div>
+<br>
+
+<div class="ui grid" style="margin: 0 auto; text-align:center;">
+    <div class="ui ten wide column" style="margin: 0 auto;">
+      <div class="ui floating message">
+        <p>{{ descripcion_encuesta }}</p>
+      </div>
+    </div>
+</div>
+<br>
+
+<div class="ui grid" style="margin: 0 auto; text-align:center;">
+  <div class="ui ten wide column" style="margin: 0 auto;">
+    <div class="ui segment chadow" *ngFor="let question of preguntas; let i = index">
+      <h3 style="font-weight: bold !important">{{ question.titulo }}</h3>
+      <h4>{{ question.descripcion }}</h4>
+      <br>
+      <div [ngSwitch]="question.tipo">
+        <div class="ui labeled input" style="width: 100%" *ngSwitchCase="'texto'">
+          <div class="ui label">
+            Respuesta:
+          </div>
+          <input type="text" placeholder="{{ question.respuestas }}">
+        </div>
+        
+        <div *ngSwitchCase="'multiple'" style="width: 100%">
+          <div *ngFor="let respuesta of  question.respuestas">
+            <div class="ui checkbox">
+              <input type="checkbox">
+              <label>{{ respuesta }}</label>
+              <br>
+            </div>
+            <br>
+          </div>
+        </div>
+        
+        
+        <div *ngSwitchCase="'seleccion'" style="width: 50%; margin: 0 auto !important">
+          <div class="ui form">
+            <div class="field">
+              <label>Seleccione una respuesta</label>
+              <select class="ui search dropdown">
+                <option disabled selected>Seleccione una opción</option>
+                <option *ngFor="let respuesta of question.respuestas" value="{{ respuesta }}">
+                  {{ respuesta }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div *ngSwitchCase="'radio'" style="width: 50%; margin: 0 auto !important">
+          <div *ngFor="let respuesta of question.respuestas">
+            <div class="ui radio checkbox" style="margin: 2em !important">
+              <input type="radio" name="radio">
+              <label>{{ respuesta }}</label>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</div>
