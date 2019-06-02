@@ -78,9 +78,10 @@
 
 <div class="ui grid" style="margin: 0 auto; text-align:center;">
     <div class="ui ten wide column" style="margin: 0 auto;">
-        <div class="ui segment chadow" *ngFor="let question of preguntas">
+        <div class="ui segment chadow" *ngFor="let question of preguntas; let i = index">
             <h3 style="font-weight: bold !important">{{ question.titulo }}</h3>
             <h4>{{ question.descripcion }}</h4>
+            <button style="position:  absolute; top: 1em; right: 1em;" class="ui inverted red button" (click)="deletePregunta(i)">Borrar</button>
             <br>
             <div [ngSwitch]="question.tipo">
                 <div class="ui labeled input" style="width: 100%" *ngSwitchCase="'texto'">
@@ -137,18 +138,18 @@
 <sm-modal title="Guardar como borrador" class="" icon="eraser" #modalBorrador>
     <modal-content>
         <form [formGroup]="saveAsBorradorForm">
-        <div class="ui labeled input" style="width: 80%; margin: 2em !important">
-            <div class="ui label">
-            Nombre de la encuesta:
+            <div class="ui labeled input" style="width: 80%; margin: 2em !important">
+                <div class="ui label">
+                Nombre de la encuesta:
+                </div>
+                <input type="text" placeholder="Encuesta" formControlName="titulo">
             </div>
-            <input type="text" placeholder="Encuesta" formControlName="titulo">
-        </div>
-        <div class="ui labeled input" style="width: 80%; margin: 2em !important">
-            <div class="ui label">
-            Descripción de la encuesta:
+            <div class="ui labeled input" style="width: 80%; margin: 2em !important">
+                <div class="ui label">
+                Descripción de la encuesta:
+                </div>
+                <input type="text" placeholder="Encuesta realizada para..." formControlName="descripcion">
             </div>
-            <input type="text" placeholder="Encuesta realizada para..." formControlName="descripcion">
-        </div>
         </form>
     </modal-content>
     <modal-actions>

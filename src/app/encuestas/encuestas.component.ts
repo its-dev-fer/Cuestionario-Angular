@@ -45,4 +45,14 @@ export class EncuestasComponent implements OnInit {
 
     this.router.navigate(["editar-borador"], navigationExtras)
   }
+
+  deletePregunta(index)
+  {
+    this.apollo.mutate({
+      mutation: Query.deleteEncuesta,
+      variables: {
+        id: parseInt(index)
+      }
+    })
+  }
 }

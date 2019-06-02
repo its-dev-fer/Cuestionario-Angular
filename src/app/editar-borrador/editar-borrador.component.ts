@@ -241,4 +241,9 @@ export class EditarBorradorComponent implements OnInit {
     })
   }
 
+
+  deletePregunta(index){
+    this.preguntas.splice(index, 1)
+  }
+
 }
